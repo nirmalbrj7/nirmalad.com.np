@@ -1,4 +1,4 @@
-import { ExternalLink, Calendar, Users, Link as LinkIcon } from 'lucide-react';
+import { ExternalLink, Calendar, Users } from 'lucide-react';
 
 const publications = [
     {
