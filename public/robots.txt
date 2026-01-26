@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nirmalad.com.np/sitemap.xml
