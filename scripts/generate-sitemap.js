@@ -10,6 +10,7 @@ const routes = [
     '/academic',
     '/publications',
     '/projects',
+    '/open-source',
     '/volunteer',
     '/blog',
     '/recognition',

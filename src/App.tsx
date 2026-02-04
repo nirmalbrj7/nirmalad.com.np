@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
@@ -10,6 +10,7 @@ import Blog from './pages/Blog';
 import Recognition from './pages/Recognition';
 import Contact from './pages/Contact';
 import CV from './pages/CV';
+import OpenSource from './pages/OpenSource';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
     <motion.div
@@ -37,6 +38,8 @@ function AnimatedRoutes() {
                 <Route path="/recognition" element={<PageTransition><Recognition /></PageTransition>} />
                 <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
                 <Route path="/cv" element={<PageTransition><CV /></PageTransition>} />
+                <Route path="/open-source" element={<PageTransition><OpenSource /></PageTransition>} />
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </AnimatePresence>
     );
