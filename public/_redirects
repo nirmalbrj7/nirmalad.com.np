@@ -1,1 +1,1 @@
-/* /index.html 200
+# /* /index.html 200 (Commented out to fix Cloudflare loop error. SPA handling moved to wrangler.toml)
