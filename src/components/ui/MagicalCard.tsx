@@ -30,7 +30,7 @@ export const MagicalCard: React.FC<MagicalCardProps> = ({ children, className = 
             ref={ref}
             onMouseMove={onMouseMove}
             onClick={onClick}
-            className={`relative group rounded-3xl border border-cream-200 bg-white hover:bg-cream-50 transition-colors duration-500 overflow-hidden ${className}`}
+            className={`relative group rounded-3xl border border-white/70 bg-white/80 backdrop-blur-md hover:bg-white transition-colors duration-500 overflow-hidden ${className}`}
         >
             {/* Hover Glow Effect */}
             <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100 z-10">

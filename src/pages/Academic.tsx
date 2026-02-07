@@ -1,5 +1,6 @@
 import { GraduationCap, Briefcase, BookOpen, Calendar, MapPin, Globe } from 'lucide-react';
-import ResearchGraph from '../components/viz/ResearchGraph';
+import { motion } from 'framer-motion';
+import ResearchNexus from '../components/viz/ResearchNexus';
 
 const experiences = [
     {
@@ -65,96 +66,101 @@ const education = [
 
 export default function Academic() {
     return (
-        <div className="bg-white min-h-screen py-20 font-sans text-slate-900">
+        <div className="bg-cream-50 min-h-screen py-20 font-sans text-midnight-900">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}
                 <div className="max-w-3xl mb-20">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 font-serif mb-6">Academic Profile</h1>
-                    <p className="text-xl text-slate-600 leading-relaxed">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-midnight-900 font-display mb-6">Academic Profile</h1>
+                    <p className="text-xl text-midnight-600 leading-relaxed">
                         My academic work grows from real problems, real communities, and the desire to understand how people move, learn, and live with technology in their everyday spaces.
                     </p>
                 </div>
 
                 {/* Research Interests & Viz */}
-                <section className="mb-24">
-                    <h2 className="text-2xl font-bold text-slate-900 mb-8 border-b border-slate-200 pb-4">Research Interests</h2>
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div className="prose prose-lg text-slate-600">
-                            <p>
-                                I am interested in how technology shapes experience, space, and decision making. My current focus includes:
-                            </p>
-                            <ul className="list-disc pl-5 space-y-2">
-                                <li>Immersive augmented and virtual reality experiences in real-world spaces</li>
-                                <li>Human–computer interaction and human–space interaction</li>
-                                <li>Spatial storytelling, narrative placement, and mixed reality design</li>
-                                <li>Data-driven resilience, disaster risk reduction, and housing technologies</li>
-                                <li>AI and machine learning applications for decision support</li>
-                            </ul>
-                        </div>
-                        <div>
-                            {/* D3 Graph Component */}
-                            <ResearchGraph />
-                            <p className="text-center text-sm text-slate-400 mt-4">Interactive Network of Research Areas</p>
-                        </div>
+                <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7 }}
+                    className="mb-24"
+                >
+                    <h2 className="text-2xl font-bold text-midnight-900 mb-8 border-b border-cream-200 pb-4">Research Interests</h2>
+                    <div className="mt-10">
+                        <ResearchNexus />
                     </div>
-                </section>
+                </motion.section>
 
                 {/* Experience Section */}
-                <section className="mb-24">
-                    <h2 className="text-2xl font-bold text-slate-900 mb-10 flex items-center">
-                        <Briefcase className="mr-3 text-primary-600" /> Professional & Teaching Experience
+                <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7 }}
+                    className="mb-24"
+                >
+                    <h2 className="text-2xl font-bold text-midnight-900 mb-10 flex items-center">
+                        <Briefcase className="mr-3 text-royal-600" /> Professional & Teaching Experience
                     </h2>
                     <div className="space-y-6">
                         {experiences.map((item, index) => (
-                            <div key={index} className="bg-slate-50 rounded-xl p-8 border border-slate-100 hover:border-primary-200 transition-colors">
+                            <motion.div
+                                key={index}
+                                whileHover={{ y: -4, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
+                                className="surface-card rounded-2xl p-8 border border-white/60 hover:border-royal-200 transition-all duration-300 shadow-sm hover:shadow-lg"
+                            >
                                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                                     <div>
-                                        <h3 className="text-xl font-bold text-slate-900">{item.role}</h3>
-                                        <div className="text-primary-700 font-medium text-lg">{item.organization}</div>
+                                        <h3 className="text-xl font-bold text-midnight-900">{item.role}</h3>
+                                        <div className="text-royal-700 font-medium text-lg">{item.organization}</div>
                                     </div>
-                                    <div className="flex flex-col md:items-end text-sm text-slate-500 mt-2 md:mt-0 font-mono">
+                                    <div className="flex flex-col md:items-end text-sm text-midnight-500 mt-2 md:mt-0 font-mono">
                                         <span className="flex items-center"><Calendar size={14} className="mr-2" /> {item.date}</span>
                                         <span className="flex items-center mt-1"><MapPin size={14} className="mr-2" /> {item.location}</span>
                                     </div>
                                 </div>
-                                <p className="text-slate-600 leading-relaxed max-w-4xl">{item.description}</p>
-                            </div>
+                                <p className="text-midnight-600 leading-relaxed max-w-4xl">{item.description}</p>
+                            </motion.div>
                         ))}
                     </div>
-                </section>
+                </motion.section>
 
                 {/* Education Section */}
-                <section>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-10 flex items-center">
-                        <GraduationCap className="mr-3 text-primary-600" /> Education
+                <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7 }}
+                >
+                    <h2 className="text-2xl font-bold text-midnight-900 mb-10 flex items-center">
+                        <GraduationCap className="mr-3 text-royal-600" /> Education
                     </h2>
                     <div className="space-y-12">
                         {education.map((item, index) => (
                             <div key={index} className="relative pl-8 md:pl-0">
                                 {/* Timeline Logic (Pure CSS/Visual) */}
                                 <div className="md:flex gap-8 group">
-                                    <div className="hidden md:block w-32 text-right pt-1 font-mono text-sm text-slate-400 shrink-0">
+                                    <div className="hidden md:block w-32 text-right pt-1 font-mono text-sm text-midnight-400 shrink-0">
                                         {item.year}
                                     </div>
 
-                                    <div className="border-l-2 border-slate-200 pl-8 pb-12 relative">
-                                        <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white border-4 border-primary-500"></div>
+                                    <div className="border-l-2 border-cream-200 pl-8 pb-12 relative">
+                                        <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white border-4 border-royal-500"></div>
 
                                         {/* Mobile Date */}
-                                        <span className="md:hidden inline-block px-2 py-1 mb-2 text-xs font-mono font-bold bg-primary-50 text-primary-700 rounded-md">
+                                        <span className="md:hidden inline-block px-2 py-1 mb-2 text-xs font-mono font-bold bg-royal-50 text-royal-700 rounded-md">
                                             {item.year}
                                         </span>
 
-                                        <h3 className="text-2xl font-bold text-slate-900">{item.degree}</h3>
-                                        <div className="text-lg text-slate-700 mb-2">{item.institution}, {item.location}</div>
-                                        <p className="text-slate-600">{item.description}</p>
+                                        <h3 className="text-2xl font-bold text-midnight-900">{item.degree}</h3>
+                                        <div className="text-lg text-midnight-700 mb-2">{item.institution}, {item.location}</div>
+                                        <p className="text-midnight-600">{item.description}</p>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-                </section>
+                </motion.section>
 
             </div>
         </div>

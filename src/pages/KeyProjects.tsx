@@ -2,6 +2,34 @@ import { Layers, Zap, Smartphone, HardHat, LandPlot, Building2, Globe, BookOpen,
 import { MagicalCard } from '../components/ui/MagicalCard';
 import { motion } from 'framer-motion';
 
+const colorMap: Record<string, { icon: string; pill: string; impact: string }> = {
+    blue: {
+        icon: "bg-royal-50 text-royal-700 ring-royal-100 group-hover:bg-royal-100",
+        pill: "bg-royal-50/70 text-royal-700 border-royal-100/60",
+        impact: "bg-royal-50/60 border-royal-100/60 text-royal-700",
+    },
+    purple: {
+        icon: "bg-indigo-50 text-indigo-700 ring-indigo-100 group-hover:bg-indigo-100",
+        pill: "bg-indigo-50/70 text-indigo-700 border-indigo-100/60",
+        impact: "bg-indigo-50/60 border-indigo-100/60 text-indigo-700",
+    },
+    emerald: {
+        icon: "bg-emerald-50 text-emerald-700 ring-emerald-100 group-hover:bg-emerald-100",
+        pill: "bg-emerald-50/70 text-emerald-700 border-emerald-100/60",
+        impact: "bg-emerald-50/60 border-emerald-100/60 text-emerald-700",
+    },
+    rose: {
+        icon: "bg-rose-50 text-rose-700 ring-rose-100 group-hover:bg-rose-100",
+        pill: "bg-rose-50/70 text-rose-700 border-rose-100/60",
+        impact: "bg-rose-50/60 border-rose-100/60 text-rose-700",
+    },
+    amber: {
+        icon: "bg-amber-50 text-amber-700 ring-amber-100 group-hover:bg-amber-100",
+        pill: "bg-amber-50/70 text-amber-700 border-amber-100/60",
+        impact: "bg-amber-50/60 border-amber-100/60 text-amber-700",
+    },
+};
+
 const categories = [
     {
         name: "Global Digital Platforms",
@@ -178,7 +206,6 @@ const categories = [
 export default function KeyProjects() {
     return (
         <div className="bg-cream-50 min-h-screen py-20 font-sans text-midnight-900">
-            <div className="bg-noise" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
 
@@ -188,7 +215,7 @@ export default function KeyProjects() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h1 className="text-5xl md:text-6xl font-black text-midnight-950 font-serif mb-6 tracking-tight">
+                        <h1 className="text-5xl md:text-6xl font-black text-midnight-950 font-display mb-6 tracking-tight">
                             Key Projects<span className="text-royal-500">.</span>
                         </h1>
                         <p className="text-xl text-midnight-700 leading-relaxed font-light">
@@ -198,62 +225,73 @@ export default function KeyProjects() {
                 </div>
 
                 <div className="space-y-24">
-                    {categories.map((cat, catIdx) => (
-                        <section key={catIdx}>
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5 }}
-                                className="flex items-end mb-10"
+                    {categories.map((cat, catIdx) => {
+                        const tone = colorMap[cat.color] ?? colorMap.blue;
+                        return (
+                            <motion.section
+                                key={catIdx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-80px" }}
+                                transition={{ duration: 0.7 }}
                             >
-                                <div>
-                                    <h2 className="text-3xl font-bold text-midnight-900 font-serif">{cat.name}</h2>
-                                    <p className="text-midnight-500 text-sm mt-2 font-medium bg-white/50 inline-block px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
-                                        {cat.description}
-                                    </p>
-                                </div>
-                                <span className="h-px flex-grow bg-gradient-to-r from-midnight-100 to-transparent ml-6 mb-2"></span>
-                            </motion.div>
-
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {cat.projects.map((project, idx) => (
-                                    <MagicalCard key={idx} className="p-8 h-full flex flex-col group">
-                                        <div className="flex justify-between items-start mb-6">
-                                            <div className={`p-3 rounded-2xl bg-${cat.color}-50 text-${cat.color}-600 ring-1 ring-${cat.color}-100 transition-colors duration-300 group-hover:bg-${cat.color}-100`}>
-                                                <project.icon size={28} />
-                                            </div>
-                                            <span className="text-[10px] font-bold tracking-widest uppercase text-midnight-400 bg-midnight-50/50 px-2 py-1 rounded backdrop-blur-sm">{project.period}</span>
-                                        </div>
-
-                                        <h3 className="text-xl font-bold text-midnight-900 mb-2 font-serif">{project.title}</h3>
-                                        <div className="text-xs font-bold text-royal-600 uppercase tracking-wider mb-4 border-b border-dashed border-midnight-100 pb-4 w-full">{project.role}</div>
-
-                                        <p className="text-midnight-600 text-sm leading-relaxed mb-6 font-light">
-                                            {project.desc}
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5 }}
+                                    className="flex items-end mb-10"
+                                >
+                                    <div>
+                                        <h2 className="text-3xl font-bold text-midnight-900 font-display">{cat.name}</h2>
+                                        <p className={`text-midnight-500 text-sm mt-2 font-medium inline-block px-3 py-1 rounded-full backdrop-blur-sm border ${tone.pill}`}>
+                                            {cat.description}
                                         </p>
+                                    </div>
+                                    <span className="h-px flex-grow bg-gradient-to-r from-midnight-100 to-transparent ml-6 mb-2"></span>
+                                </motion.div>
 
-                                        {project.impact && (
-                                            <div className="mb-6 p-4 bg-midnight-50/50 rounded-xl border border-midnight-100/50">
-                                                <span className="text-[10px] font-bold text-royal-600 uppercase tracking-wider block mb-1">Impact</span>
-                                                <p className="text-midnight-700 text-xs italic leading-relaxed">
-                                                    "{project.impact}"
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {cat.projects.map((project, idx) => (
+                                        <motion.div key={idx} whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
+                                            <MagicalCard className="p-8 h-full flex flex-col group">
+                                                <div className="flex justify-between items-start mb-6">
+                                                    <div className={`p-3 rounded-2xl ring-1 transition-colors duration-300 ${tone.icon}`}>
+                                                        <project.icon size={28} />
+                                                    </div>
+                                                    <span className="text-[10px] font-bold tracking-widest uppercase text-midnight-400 bg-midnight-50/50 px-2 py-1 rounded backdrop-blur-sm">{project.period}</span>
+                                                </div>
+
+                                                <h3 className="text-xl font-bold text-midnight-900 mb-2 font-display">{project.title}</h3>
+                                                <div className="text-xs font-bold text-royal-600 uppercase tracking-wider mb-4 border-b border-dashed border-midnight-100 pb-4 w-full">{project.role}</div>
+
+                                                <p className="text-midnight-600 text-sm leading-relaxed mb-6 font-light">
+                                                    {project.desc}
                                                 </p>
-                                            </div>
-                                        )}
 
-                                        <div className="flex flex-wrap gap-2 mt-auto">
-                                            {project.tags.map((tag, tIdx) => (
-                                                <span key={tIdx} className="text-[10px] uppercase tracking-wide bg-white text-midnight-500 px-3 py-1 rounded-full font-medium border border-midnight-50 shadow-sm">
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </MagicalCard>
-                                ))}
-                            </div>
-                        </section>
-                    ))}
+                                                {project.impact && (
+                                                    <div className={`mb-6 p-4 rounded-xl border ${tone.impact}`}>
+                                                        <span className="text-[10px] font-bold uppercase tracking-wider block mb-1">Impact</span>
+                                                        <p className="text-midnight-700 text-xs italic leading-relaxed">
+                                                            "{project.impact}"
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex flex-wrap gap-2 mt-auto">
+                                                    {project.tags.map((tag, tIdx) => (
+                                                        <span key={tIdx} className="text-[10px] uppercase tracking-wide bg-white text-midnight-500 px-3 py-1 rounded-full font-medium border border-midnight-50 shadow-sm">
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </MagicalCard>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.section>
+                        );
+                    })}
                 </div>
 
             </div>

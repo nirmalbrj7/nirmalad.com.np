@@ -1,0 +1,23 @@
+<svg width="900" height="700" viewBox="0 0 900 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="a1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1" />
+      <stop offset="1" stop-color="#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="a2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#22c55e" />
+      <stop offset="1" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect x="60" y="60" width="780" height="580" rx="48" fill="#f8fafc"/>
+  <rect x="110" y="120" width="360" height="210" rx="24" fill="#ffffff" stroke="#e2e8f0"/>
+  <rect x="510" y="120" width="290" height="210" rx="24" fill="#ffffff" stroke="#e2e8f0"/>
+  <rect x="110" y="360" width="690" height="200" rx="24" fill="#ffffff" stroke="#e2e8f0"/>
+  <rect x="140" y="150" width="220" height="12" rx="6" fill="#cbd5f5"/>
+  <rect x="140" y="180" width="180" height="10" rx="5" fill="#e2e8f0"/>
+  <rect x="540" y="150" width="180" height="12" rx="6" fill="#dbeafe"/>
+  <rect x="540" y="180" width="140" height="10" rx="5" fill="#e2e8f0"/>
+  <circle cx="260" cy="470" r="70" fill="url(#a1)" opacity="0.22"/>
+  <circle cx="640" cy="470" r="90" fill="url(#a2)" opacity="0.22"/>
+  <path d="M200 520 C 280 470, 340 540, 420 500 C 500 460, 580 520, 700 500" stroke="#cbd5f5" stroke-width="2" stroke-dasharray="6 8" />
+</svg>

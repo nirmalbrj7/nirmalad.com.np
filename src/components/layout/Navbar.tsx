@@ -37,62 +37,66 @@ export default function Navbar() {
 
     return (
         <>
-            <motion.nav
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.6 }}
-                className={cn(
-                    'fixed inset-x-0 z-50 transition-all duration-500 ease-in-out',
-                    scrolled ? 'top-4 md:top-6' : 'top-0'
-                )}
-            >
-                <div className={cn(
-                    "mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500",
-                    scrolled
-                        ? "max-w-7xl bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg rounded-2xl md:mx-auto mx-4"
-                        : "max-w-7xl bg-transparent border-transparent"
-                )}>
-                    <div className={cn("flex justify-between items-center transition-all duration-500", scrolled ? "h-16" : "h-24")}>
-                        {/* Logo */}
-                        <Link to="/" className="flex-shrink-0 flex items-center group relative">
-                            <span className={cn(
-                                "font-serif text-xl font-black tracking-tight transition-colors duration-300 relative z-10",
-                                scrolled ? "text-midnight-900" : "text-midnight-900"
-                            )}>
-                                Nirmal Adhikari
-                            </span>
-                            <span className="absolute -bottom-1 left-0 w-0 h-1 bg-royal-500 transition-all group-hover:w-full"></span>
-                        </Link>
+        <motion.nav
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6 }}
+            className={cn(
+                'fixed inset-x-0 z-50 transition-all duration-500 ease-in-out',
+                scrolled ? 'top-4 md:top-6' : 'top-3'
+            )}
+        >
+            <div className={cn(
+                "mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500",
+                scrolled
+                    ? "max-w-7xl bg-white/80 backdrop-blur-xl border border-white/60 shadow-lg rounded-[1.25rem] md:mx-auto mx-4"
+                    : "max-w-7xl bg-transparent border-transparent"
+            )}>
+                <div className={cn("flex justify-between items-center transition-all duration-500", scrolled ? "h-16" : "h-24")}>
+                    {/* Logo */}
+                    <Link to="/" className="flex-shrink-0 flex items-center group relative">
+                        <span className={cn(
+                            "font-display text-xl font-black tracking-tight transition-colors duration-300 relative z-10",
+                            scrolled ? "text-midnight-900" : "text-midnight-900"
+                        )}>
+                            Nirmal Adhikari
+                        </span>
+                        <span className="absolute -bottom-1 left-0 w-0 h-1 bg-royal-500 transition-all group-hover:w-full"></span>
+                    </Link>
 
-                        {/* Desktop Menu */}
-                        <div className="hidden lg:flex items-center space-x-1">
-                            {navItems.map((item) => {
-                                const isActive = location.pathname === item.path;
-                                return (
-                                    <Link
-                                        key={item.name}
-                                        to={item.path}
-                                        className={cn(
-                                            "px-4 py-2 rounded-full text-sm font-medium transition-all relative group",
-                                            isActive
-                                                ? "text-royal-600 bg-royal-50/50"
-                                                : "text-midnight-600 hover:text-midnight-900 hover:bg-white/50"
-                                        )}
-                                    >
-                                        <span className="relative z-10">{item.name}</span>
-                                        {isActive && (
-                                            <motion.div
-                                                layoutId="navbar-indicator"
-                                                className="absolute inset-0 rounded-full bg-royal-50 border border-royal-100"
-                                                initial={false}
-                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                                style={{ zIndex: 0 }}
-                                            />
-                                        )}
-                                    </Link>
-                                );
-                            })}
-                        </div>
+                    {/* Desktop Menu */}
+                    <div className="hidden lg:flex items-center space-x-1">
+                        {navItems.map((item) => {
+                            const isActive = location.pathname === item.path;
+                            const isCta = item.path === '/contact';
+                            return (
+                                <Link
+                                    key={item.name}
+                                    to={item.path}
+                                    aria-current={isActive ? "page" : undefined}
+                                    className={cn(
+                                        "px-4 py-2 rounded-full text-sm font-medium transition-all relative group",
+                                        isCta
+                                            ? "ml-2 bg-midnight-900 text-white hover:bg-midnight-800 shadow-sm"
+                                            : isActive
+                                                ? "text-royal-700 bg-royal-50/70"
+                                                : "text-midnight-600 hover:text-midnight-900 hover:bg-white/60"
+                                    )}
+                                >
+                                    <span className="relative z-10">{item.name}</span>
+                                    {isActive && !isCta && (
+                                        <motion.div
+                                            layoutId="navbar-indicator"
+                                            className="absolute inset-0 rounded-full bg-royal-50 border border-royal-100"
+                                            initial={false}
+                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                            style={{ zIndex: 0 }}
+                                        />
+                                    )}
+                                </Link>
+                            );
+                        })}
+                    </div>
 
                         {/* Mobile Menu Button */}
                         <div className="flex lg:hidden">
@@ -114,7 +118,7 @@ export default function Navbar() {
                             initial={{ opacity: 0, height: 0, y: -20 }}
                             animate={{ opacity: 1, height: 'auto', y: 0 }}
                             exit={{ opacity: 0, height: 0, y: -20 }}
-                            className="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4 bg-white/90 backdrop-blur-xl border border-white/20 shadow-xl rounded-2xl overflow-hidden"
+                            className="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4 bg-white/90 backdrop-blur-xl border border-white/60 shadow-xl rounded-2xl overflow-hidden"
                         >
                             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 {navItems.map((item) => (
@@ -124,7 +128,7 @@ export default function Navbar() {
                                         className={cn(
                                             "block px-3 py-3 rounded-xl text-base font-medium transition-colors",
                                             location.pathname === item.path
-                                                ? "text-royal-600 bg-royal-50"
+                                                ? "text-royal-700 bg-royal-50"
                                                 : "text-midnight-600 hover:text-midnight-900 hover:bg-midnight-50/50"
                                         )}
                                     >

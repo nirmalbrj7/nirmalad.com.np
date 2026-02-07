@@ -110,3 +110,25 @@ dist
 Thumbs.db
 
 # Cloudflare
+.wrangler/
+
+# Temporary Files
+lint_output.txt
+task.md
+todo.md
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# IDEs and Editors
+.idea/
+.vscode/*.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+*.suo
+*.ntvs
+*.njsproj
+*.sln
+*.sw?

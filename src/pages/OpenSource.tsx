@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
     Github,
     Globe,
@@ -89,7 +90,6 @@ const tools = [
 export default function OpenSource() {
     return (
         <div className="bg-cream-50 min-h-screen py-20 font-sans text-midnight-900 selection:bg-royal-100 selection:text-royal-900">
-            <div className="bg-noise opacity-[0.03] fixed inset-0 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
                 {/* Header */}
@@ -103,7 +103,7 @@ export default function OpenSource() {
                             <Zap size={14} className="fill-royal-500" />
                             <span>Developer Ecosystem</span>
                         </div>
-                        <h1 className="text-5xl md:text-7xl font-black text-midnight-950 font-serif mb-8 tracking-tighter leading-tight">
+                        <h1 className="text-5xl md:text-7xl font-black text-midnight-950 font-display mb-8 tracking-tighter leading-tight">
                             Open Source <span className="text-royal-600">&</span> Free Tools<span className="text-royal-500">.</span>
                         </h1>
                         <p className="text-xl text-midnight-700 leading-relaxed font-light">
@@ -137,9 +137,9 @@ export default function OpenSource() {
                                         />
                                     ) : (
                                         <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${tool.gradient} p-8 group-hover:scale-105 transition-transform duration-700`}>
-                                            <h3 className="text-3xl md:text-4xl font-black text-white font-serif text-center leading-tight tracking-tight drop-shadow-lg">
-                                                {tool.title}
-                                            </h3>
+                        <h3 className="text-3xl md:text-4xl font-black text-white font-display text-center leading-tight tracking-tight drop-shadow-lg">
+                                            {tool.title}
+                                        </h3>
                                         </div>
                                     )}
                                     <div className="absolute top-4 left-4 z-20 flex flex-wrap gap-2">
@@ -161,9 +161,9 @@ export default function OpenSource() {
                                 <div className="p-8 flex flex-col flex-grow">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex flex-col">
-                                            <h3 className="text-2xl font-black text-midnight-950 font-serif leading-tight">
-                                                {tool.title}
-                                            </h3>
+                                        <h3 className="text-2xl font-black text-midnight-950 font-display leading-tight">
+                                            {tool.title}
+                                        </h3>
                                         </div>
                                         <div className="p-2 rounded-full bg-midnight-50 text-midnight-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                             <ArrowRight size={20} />
@@ -203,17 +203,17 @@ export default function OpenSource() {
                     <div className="bg-noise opacity-10 absolute inset-0 pointer-events-none" />
                     <div className="relative z-10 max-w-2xl mx-auto">
                         <Code2 size={48} className="mx-auto mb-8 text-royal-200 opacity-80" />
-                        <h2 className="text-3xl md:text-4xl font-black font-serif mb-6 leading-tight">Have a project idea or want to collaborate?</h2>
+                        <h2 className="text-3xl md:text-4xl font-black font-display mb-6 leading-tight">Have a project idea or want to collaborate?</h2>
                         <p className="text-royal-100 text-lg mb-10 font-light leading-relaxed">
                             I'm always looking for interesting open-source projects to contribute to or new tools to build. Feel free to reach out.
                         </p>
-                        <a
-                            href="/contact"
+                        <Link
+                            to="/contact"
                             className="inline-flex items-center gap-2 bg-white text-royal-600 px-8 py-4 rounded-full font-bold hover:bg-royal-50 transition-all hover:scale-105 shadow-lg group"
                         >
                             Get in Touch
                             <ExternalLink size={18} className="transition-transform group-hover:translate-x-1" />
-                        </a>
+                        </Link>
                     </div>
                 </motion.div>
             </div>

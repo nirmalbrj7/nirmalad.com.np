@@ -1,4 +1,5 @@
 import { ExternalLink, Calendar, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const publications = [
     {
@@ -8,10 +9,10 @@ const publications = [
                 title: "Combining Experiential and Spatial Data for Immersive AR Narrative Creation: A Phased Methodology",
                 authors: ["Nirmal Adhikari", "Brian Lilley", "Martha Radice", "Susan Fitzgerald", "Alex McLean", "Derek Reilly"],
                 venue: "International Conference on Interactive Digital Storytelling (ICIDS 2025), LNCS, Springer",
-                year: "2025 (Forthcoming)",
+                year: "2025",
                 type: "Conference Paper",
                 abstract: "Proposes a phased methodology blending spatial analysis with experiential data from real deployments of immersive AR narratives. Offers a framework for connecting narrative design with measured experience in physical space.",
-                link: "https://icids.org"
+                link: "http://doi.org/10.1007/978-3-032-12408-1_8"
             },
             {
                 title: "Virtual Reality for Active Aging: First-Time Experiences of Older Adults with First Steps",
@@ -92,19 +93,19 @@ const publications = [
 
 export default function Publications() {
     return (
-        <div className="bg-white min-h-screen py-20 font-sans text-slate-900">
+        <div className="bg-cream-50 min-h-screen py-20 font-sans text-midnight-900">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 <div className="max-w-3xl mb-16">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 font-serif mb-6">Publications</h1>
-                    <p className="text-xl text-slate-600 leading-relaxed">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-midnight-900 font-display mb-6">Publications</h1>
+                    <p className="text-xl text-midnight-600 leading-relaxed">
                         My research sits at the intersection of immersive technologies, spatial analysis, and AI systems.
                     </p>
                     <div className="flex gap-4 mt-6">
-                        <a href="https://scholar.google.com/citations?user=3HxpopEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" className="text-primary-600 font-medium hover:underline flex items-center">
+                        <a href="https://scholar.google.com/citations?user=3HxpopEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" className="text-royal-700 font-medium hover:underline flex items-center">
                             Google Scholar <ExternalLink size={14} className="ml-1" />
                         </a>
-                        <a href="https://orcid.org/0000-0003-1555-7867" target="_blank" rel="noopener noreferrer" className="text-primary-600 font-medium hover:underline flex items-center">
+                        <a href="https://orcid.org/0000-0003-1555-7867" target="_blank" rel="noopener noreferrer" className="text-royal-700 font-medium hover:underline flex items-center">
                             ORCID Profile <ExternalLink size={14} className="ml-1" />
                         </a>
                     </div>
@@ -112,12 +113,25 @@ export default function Publications() {
 
                 <div className="space-y-16">
                     {publications.map((section, idx) => (
-                        <section key={idx}>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-8 border-l-4 border-primary-500 pl-4">{section.category}</h2>
+                        <motion.section
+                            key={idx}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-80px" }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <h2 className="text-2xl font-bold text-midnight-900 mb-8 border-l-4 border-royal-500 pl-4">{section.category}</h2>
                             <div className="grid gap-8">
                                 {section.items.map((pub, pIdx) => (
-                                    <article key={pIdx} className="group">
-                                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-primary-700 transition-colors mb-2">
+                                    <motion.article
+                                        key={pIdx}
+                                        initial={{ opacity: 0, y: 18 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true, margin: "-80px" }}
+                                        transition={{ duration: 0.5, delay: pIdx * 0.04 }}
+                                        className="group surface-card rounded-3xl p-8 md:p-10"
+                                    >
+                                        <h3 className="text-xl md:text-2xl font-bold text-midnight-900 group-hover:text-royal-700 transition-colors mb-2 font-display">
                                             {pub.link && pub.link !== "#" ? (
                                                 <a href={pub.link} target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center gap-2">
                                                     {pub.title}
@@ -127,13 +141,13 @@ export default function Publications() {
                                                 pub.title
                                             )}
                                         </h3>
-                                        <div className="text-sm text-slate-500 font-medium mb-3 flex flex-wrap gap-4 items-center">
+                                        <div className="text-sm text-midnight-500 font-medium mb-3 flex flex-wrap gap-4 items-center">
                                             <span className="flex items-center flex-wrap gap-1">
                                                 <Users size={14} className="mr-1" />
                                                 {pub.authors.map((author, i) => (
                                                     <span key={i}>
                                                         {author === "Nirmal Adhikari" ? (
-                                                            <strong className="text-slate-900 font-bold">{author}</strong>
+                                                            <strong className="text-midnight-900 font-bold">{author}</strong>
                                                         ) : (
                                                             author
                                                         )}
@@ -142,18 +156,18 @@ export default function Publications() {
                                                 ))}
                                             </span>
                                             <span className="flex items-center"><Calendar size={14} className="mr-1" /> {pub.year}</span>
-                                            <span className="flex items-center bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-normal">{pub.type}</span>
+                                            <span className="flex items-center bg-cream-100 px-2 py-0.5 rounded text-midnight-600 font-normal">{pub.type}</span>
                                         </div>
-                                        <div className="text-sm font-serif italic text-slate-700 mb-3 block">
+                                        <div className="text-sm font-display italic text-midnight-700 mb-3 block">
                                             {pub.venue}
                                         </div>
-                                        <p className="text-slate-600 leading-relaxed text-sm">
+                                        <p className="text-midnight-600 leading-relaxed text-sm">
                                             {pub.abstract}
                                         </p>
-                                    </article>
+                                    </motion.article>
                                 ))}
                             </div>
-                        </section>
+                        </motion.section>
                     ))}
                 </div>
 
