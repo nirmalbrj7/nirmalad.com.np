@@ -1,13 +1,13 @@
-import React, { useRef } from 'react';
+import { useRef, type ReactNode, type MouseEvent, type FC } from 'react';
 import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 
 interface MagicalCardProps {
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
     onClick?: () => void;
 }
 
-export const MagicalCard: React.FC<MagicalCardProps> = ({ children, className = '', onClick }) => {
+export const MagicalCard: FC<MagicalCardProps> = ({ children, className = '', onClick }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const x = useMotionValue(0);
@@ -16,7 +16,7 @@ export const MagicalCard: React.FC<MagicalCardProps> = ({ children, className = 
     const mouseX = useSpring(x, { stiffness: 500, damping: 100 });
     const mouseY = useSpring(y, { stiffness: 500, damping: 100 });
 
-    function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    function onMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
         const { left, top } = currentTarget.getBoundingClientRect();
         mouseX.set(clientX - left);
         mouseY.set(clientY - top);
@@ -35,13 +35,13 @@ export const MagicalCard: React.FC<MagicalCardProps> = ({ children, className = 
             {/* Hover Glow Effect */}
             <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100 z-10">
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-royal-500/10 to-purple-500/10 rounded-3xl"
+                    className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-coral-500/10 rounded-3xl"
                     style={style}
                 />
             </div>
 
             {/* Border Glow */}
-            <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-black/5 group-hover:ring-royal-200/50 transition-all duration-300 z-20" />
+            <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-black/5 group-hover:ring-teal-200/50 transition-all duration-300 z-20" />
 
             <div className="relative z-30 h-full">
                 {children}
@@ -49,3 +49,5 @@ export const MagicalCard: React.FC<MagicalCardProps> = ({ children, className = 
         </div>
     );
 };
+
+export default MagicalCard;

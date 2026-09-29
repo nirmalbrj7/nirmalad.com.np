@@ -1,300 +1,431 @@
-import { Layers, Zap, Smartphone, HardHat, LandPlot, Building2, Globe, BookOpen, Landmark, ScanFace } from 'lucide-react';
-import { MagicalCard } from '../components/ui/MagicalCard';
-import { motion } from 'framer-motion';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Layers, Globe, Search, ArrowRight, ExternalLink, X, MapPin, PlayCircle, Image as ImageIcon, Link2, GitMerge } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { projectCategories, allProjects, projectCountries, type CategoryTone, type Project } from '@/data/projects';
+import { linkById, posterSrc } from '@/data/links';
+import { imageSrc } from '@/data/media';
+import RelatedLinks from '@/components/media/RelatedLinks';
+import LiteYouTube from '@/components/media/LiteYouTube';
+import { creditText, photoToItem, useLightbox } from '@/components/media/lightboxContext';
+import { AnimatedSection } from '../components/ui/AnimatedSection';
+import OrganicBlob from '../components/ui/OrganicBlob';
+import CountUp from '../components/ui/CountUp';
 
-const colorMap: Record<string, { icon: string; pill: string; impact: string }> = {
-    blue: {
-        icon: "bg-royal-50 text-royal-700 ring-royal-100 group-hover:bg-royal-100",
-        pill: "bg-royal-50/70 text-royal-700 border-royal-100/60",
-        impact: "bg-royal-50/60 border-royal-100/60 text-royal-700",
-    },
-    purple: {
-        icon: "bg-indigo-50 text-indigo-700 ring-indigo-100 group-hover:bg-indigo-100",
-        pill: "bg-indigo-50/70 text-indigo-700 border-indigo-100/60",
-        impact: "bg-indigo-50/60 border-indigo-100/60 text-indigo-700",
-    },
-    emerald: {
-        icon: "bg-emerald-50 text-emerald-700 ring-emerald-100 group-hover:bg-emerald-100",
-        pill: "bg-emerald-50/70 text-emerald-700 border-emerald-100/60",
-        impact: "bg-emerald-50/60 border-emerald-100/60 text-emerald-700",
-    },
-    rose: {
-        icon: "bg-rose-50 text-rose-700 ring-rose-100 group-hover:bg-rose-100",
-        pill: "bg-rose-50/70 text-rose-700 border-rose-100/60",
-        impact: "bg-rose-50/60 border-rose-100/60 text-rose-700",
-    },
-    amber: {
-        icon: "bg-amber-50 text-amber-700 ring-amber-100 group-hover:bg-amber-100",
-        pill: "bg-amber-50/70 text-amber-700 border-amber-100/60",
-        impact: "bg-amber-50/60 border-amber-100/60 text-amber-700",
-    },
+const toneMap: Record<CategoryTone, { pill: string; impact: string; gradient: string; chip: string }> = {
+    teal: { pill: 'bg-teal-50/70 text-teal-700 border-teal-100/60', impact: 'bg-teal-50/60 border-teal-100/60', gradient: 'from-teal-500 to-teal-700', chip: 'bg-teal-600 border-teal-600' },
+    indigo: { pill: 'bg-indigo-50/70 text-indigo-700 border-indigo-100/60', impact: 'bg-indigo-50/60 border-indigo-100/60', gradient: 'from-indigo-500 to-indigo-700', chip: 'bg-indigo-600 border-indigo-600' },
+    emerald: { pill: 'bg-emerald-50/70 text-emerald-700 border-emerald-100/60', impact: 'bg-emerald-50/60 border-emerald-100/60', gradient: 'from-emerald-500 to-emerald-700', chip: 'bg-emerald-600 border-emerald-600' },
+    rose: { pill: 'bg-rose-50/70 text-rose-700 border-rose-100/60', impact: 'bg-rose-50/60 border-rose-100/60', gradient: 'from-rose-500 to-rose-700', chip: 'bg-rose-600 border-rose-600' },
+    amber: { pill: 'bg-amber-50/70 text-amber-700 border-amber-100/60', impact: 'bg-amber-50/60 border-amber-100/60', gradient: 'from-amber-500 to-amber-600', chip: 'bg-amber-600 border-amber-600' },
 };
 
-const categories = [
-    {
-        name: "Global Digital Platforms",
-        description: "Large-scale systems for resilient housing and recovery.",
-        color: "blue",
-        projects: [
-            {
-                title: "Resilient Housing in a Box (RHIAB)",
-                role: "Tech Lead & Program Manager",
-                period: "2022 - 2023",
-                desc: "I led the design and delivery of RHIAB, a comprehensive web-based technology solution that supports every stage of a resilient housing program. The platform guides users from enrollment and assessment through design, finance, and project closeout.",
-                impact: "RHIAB made it possible for teams to manage large housing programs with better clarity and less friction. It improved reporting, data quality, and coordination, and offered a scalable model adaptable for different contexts.",
-                tags: ["Web Platform", "Housing Recovery", "Systems Design"],
-                icon: Building2
-            },
-            {
-                title: "Technical Assistance Platform",
-                role: "Tech Lead & Program Manager",
-                period: "2021 - 2023",
-                desc: "I oversaw the development of a flexible information management platform for resilient housing projects. The system includes advanced form building, data collection, resource library, design tools, and multiple integrations.",
-                impact: "The platform became a central nervous system for programs. It helped teams see where each house, family, and project stood and made project management more transparent and accountable.",
-                tags: ["Info Management", "Data Collection", "Workflow"],
-                icon: Layers
-            },
-            {
-                title: "Housing Recovery Project MIS (Dominica)",
-                role: "Technology Lead",
-                period: "2019 - 2022",
-                desc: "I led the development of the Management Information System for the Housing Recovery Project in Dominica, supporting beneficiary registration, screening, and financial delivery for rebuilding 1,700+ homes.",
-                impact: "The system allowed the project team to manage a complex, high-stakes recovery effort with clarity and traceability, giving families a structured path to safe homes.",
-                tags: ["MIS", "World Bank", "Crisis Recovery"],
-                icon: HardHat
-            },
-            {
-                title: "National Home Improvement Program (Colombia)",
-                role: "Technical Advisor",
-                period: "2019 - 2022",
-                desc: "I advised on technical resources and a customized Technical Assistance Platform for Colombia's National Home Improvement Program (Box of Popular Housing), targeting the improvement of 600,000+ units.",
-                impact: "My work helped bring global expertise into a national scale effort, supporting better tools and systems for large-scale housing improvements affecting hundreds of thousands of families.",
-                tags: ["Technical Strategy", "Scale", "Government"],
-                icon: Globe
-            }
-        ]
-    },
-    {
-        name: "AI & Quality Assurance",
-        description: "Leveraging Artificial Intelligence for safety and inspection.",
-        color: "purple",
-        projects: [
-            {
-                title: "ISAC-SIMO Open Source QA",
-                role: "Project Manager & Tech Lead",
-                period: "2020 - 2021",
-                desc: "Directed the development of ISAC-SIMO, an open-source system (IBM + Linux Foundation) helping homeowners validate construction quality via mobile app and AI-backed image evaluation.",
-                impact: "The system gives homeowners a way to check construction quality themselves, increasing trust, safety, and accountability in the building process.",
-                tags: ["Open Source", "AI/ML", "IBM"],
-                icon: Zap
-            },
-            {
-                title: "PD3R (Nepal)",
-                role: "Project Manager",
-                period: "2018 - 2019",
-                desc: "Managed a mobile/web system using AI to assess retrofit potential of post-disaster houses. Led full lifecycle from model design to field deployment. Global finalist in Call for Code 2018.",
-                impact: "Demonstrated how AI can support faster, more consistent, and safer decisions in post-disaster housing recovery.",
-                tags: ["AI", "Call for Code", "Retrofit"],
-                icon: ScanFace
-            }
-        ]
-    },
-    {
-        name: "Field Systems, Monitoring & Training",
-        description: "Mobile tools facilitating on-site operations and skills.",
-        color: "emerald",
-        projects: [
-            {
-                title: "Construction Guidelines System (Philippines)",
-                role: "Project Lead",
-                period: "2019 - 2022",
-                desc: "Led an integrated web/mobile system serving as a central repository for reports and process steps, connecting to a mobile app for tracking field progress.",
-                impact: "Helped enforce good construction practices, made tracking site-level progress easier, and improved communication between field staff and supervisors.",
-                tags: ["Mobile App", "Compliance", "Field Ops"],
-                icon: Smartphone
-            },
-            {
-                title: "Competency Based Training System (Nepal)",
-                role: "Project Lead",
-                period: "2018 - 2019",
-                desc: "Created a system to manage on-the-job training for construction workers, tracking attendance and daily progress with an offline-capable mobile app.",
-                impact: "Made training structured and transparent, helping the program build practical skills in the construction workforce at scale.",
-                tags: ["EdTech", "Training", "Offline-First"],
-                icon: BookOpen
-            },
-            {
-                title: "STFC Monitoring System (Nuwakot)",
-                role: "Project Lead",
-                period: "2018 - 2019",
-                desc: "Developed the monitoring MIS for the Socio-Technical Facilitation project, recording data on beneficiaries, inspections, and reconstruction stages.",
-                impact: "Gave the team a complete picture of thousands of homes' progress and ensured technical assistance reached the right families at the right time.",
-                tags: ["Monitoring", "Data Viz", "MIS"],
-                icon: LandPlot
-            },
-            {
-                title: "Socio-Technical Facilitation (Nuwakot)",
-                role: "Technical Assistance Provider",
-                period: "2018 - 2019",
-                desc: "Worked directly with 23,000+ earthquake-affected homeowners, advising on safe rebuilding and using the monitoring systems I helped build.",
-                impact: "Helped families rebuild safer homes and supported a homeowner-driven reconstruction model respecting local needs.",
-                tags: ["Community", "Advisory", "Field Work"],
-                icon: HardHat
-            }
-        ]
-    },
-    {
-        name: "Mobile, Awareness & Immersive",
-        description: "Engaging communities through apps and VR experiences.",
-        color: "rose",
-        projects: [
-            {
-                title: "Mobile Awareness Apps",
-                role: "Development Manager",
-                period: "2018 - 2021",
-                desc: "Managed 'Tibay Balay', 'Surakshit Ghar', and 'Rumah Aman' apps across Philippines, Nepal, and Indonesia. Provided construction libraries and interactive tools.",
-                impact: "Brought expert device advice directly to people on-site, facilitating safer choices during reconstruction.",
-                tags: ["Mobile", "Education", "Multi-Region"],
-                icon: Smartphone
-            },
-            {
-                title: "Global Risk Awareness App",
-                role: "Project Lead & Developer",
-                period: "2018 - 2021",
-                desc: "Developed an app displaying hazard maps and safe zones. Users can mark their homes to see vulnerability to specific natural hazards.",
-                impact: "Supports better everyday decisions about risk and preparedness for communities in disaster-prone areas.",
-                tags: ["GIS", "Risk Mapping", "React Native"],
-                icon: LandPlot
-            },
-            {
-                title: "Eklephat Village VR Tour",
-                role: "Project Coordinator",
-                period: "2018",
-                desc: "Coordinated an immersive VR tour showcasing retrofitted houses using stitched 360-degree images for a guided experience.",
-                impact: "Served as a powerful advocacy tool, allowing donors and partners to experience retrofit results without traveling.",
-                tags: ["VR", "Immersive", "Storytelling"],
-                icon: Layers
-            }
-        ]
-    },
-    {
-        name: "Policy, Finance & Technical Guidance",
-        description: "Strategic resources for financial and organizational growth.",
-        color: "amber",
-        projects: [
-            {
-                title: "Microfinance Strengthening (Indonesia/Philippines)",
-                role: "Technical Advisor",
-                period: "2022 - 2023",
-                desc: "Contributed to resources helping microfinance institutions integrate disaster prevention into lending, including product design and technical workflows.",
-                impact: "Enabled financial institutions to support affordable home strengthening loans, allowing families to improve safety before disasters.",
-                tags: ["Microfinance", "Policy", "Strategy"],
-                icon: Landmark
-            },
-            {
-                title: "Build Change Website Redesign",
-                role: "Product Manager",
-                period: "2022 - 2023",
-                desc: "Managed the complete redesign of buildchange.org with a refreshed identity, responsive design, and rich resource library.",
-                impact: "Improved discovery of resources and strengthened the organization's global digital presence and storytelling.",
-                tags: ["Product Mgmt", "Web Design", "Branding"],
-                icon: Globe
-            }
-        ]
-    }
-];
+type MediaFilter = 'all' | 'video' | 'links';
 
 export default function KeyProjects() {
+    const [query, setQuery] = useState('');
+    const [category, setCategory] = useState<string | null>(null);
+    const [country, setCountry] = useState<string | null>(null);
+    const [media, setMedia] = useState<MediaFilter>('all');
+
+    const matches = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        return new Set(
+            allProjects
+                .filter((p) => !category || p.category.id === category)
+                .filter((p) => !country || p.countries.includes(country))
+                .filter((p) => media === 'all' || (media === 'video' ? Boolean(p.videoId) : (p.coverage?.length ?? 0) > 0))
+                .filter((p) => !q || [p.title, p.role, p.location, p.desc, p.impact, ...p.tags].join(' ').toLowerCase().includes(q))
+                .map((p) => p.id),
+        );
+    }, [query, category, country, media]);
+
+    const visibleCategories = projectCategories
+        .map((c) => ({ ...c, projects: c.projects.filter((p) => matches.has(p.id)) }))
+        .filter((c) => c.projects.length > 0);
+
+    const hasFilters = Boolean(query || category || country || media !== 'all');
+    const reset = () => { setQuery(''); setCategory(null); setCountry(null); setMedia('all'); };
+    const years = 2026 - 2015;
+
     return (
-        <div className="bg-cream-50 min-h-screen py-20 font-sans text-midnight-900">
+        <div className="min-h-screen py-20 md:py-32 relative">
+            <OrganicBlob color="teal" size="xl" className="top-0 right-0 translate-x-1/2 -translate-y-1/4" delay={0} />
+            <OrganicBlob color="coral" size="lg" className="bottom-1/4 left-0 -translate-x-1/2" delay={3} />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-
-                <div className="max-w-3xl mx-auto text-center mb-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="text-5xl md:text-6xl font-black text-midnight-950 font-display mb-6 tracking-tight">
-                            Key Projects<span className="text-royal-500">.</span>
-                        </h1>
-                        <p className="text-xl text-midnight-700 leading-relaxed font-light">
-                            These projects tell the story of my work with communities, governments, and teams across the world. Each system, platform, and tool was built to solve real problems and to give people more control over their homes, data, and decisions.
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <AnimatedSection className="grid lg:grid-cols-[1.4fr_1fr] gap-10 items-end mb-12">
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <Layers size={24} className="text-teal-600" />
+                            <span className="text-teal-600 font-semibold tracking-widest uppercase text-xs">Portfolio</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-charcoal-900 mb-6">Key Projects</h1>
+                        <p className="text-lg md:text-xl text-charcoal-600 leading-relaxed">
+                            Systems, platforms and tools I've led with communities, governments and teams across the world,
+                            with photos, videos and press coverage wherever they exist.
                         </p>
-                    </motion.div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                        {[
+                            { v: allProjects.length, l: 'Projects', s: '' },
+                            { v: projectCountries.filter((c) => c !== 'Global').length, l: 'Countries', s: '' },
+                            { v: years, l: 'Years', s: '+' },
+                        ].map((s) => (
+                            <div key={s.l} className="rounded-2xl bg-white/80 border border-sand-200 p-4">
+                                <CountUp value={s.v} suffix={s.s} className="block text-3xl md:text-4xl font-display font-bold text-gradient leading-none mb-1" />
+                                <span className="text-[11px] font-semibold uppercase tracking-wider text-charcoal-500">{s.l}</span>
+                            </div>
+                        ))}
+                    </div>
+                </AnimatedSection>
+
+                {/* Controls */}
+                <div className="relative z-10 mb-12">
+                    <div className="rounded-3xl bg-white/85 backdrop-blur-xl border border-sand-200 shadow-lg shadow-charcoal-900/5 p-3 md:p-4 space-y-3">
+                        <div className="flex flex-col md:flex-row gap-3">
+                            <div className="relative flex-1">
+                                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-charcoal-400" />
+                                <input
+                                    type="search"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    placeholder="Search projects, roles, technologies…"
+                                    aria-label="Search projects"
+                                    className="w-full pl-10 pr-4 py-2.5 rounded-full bg-sand-50 border border-sand-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-400"
+                                />
+                            </div>
+                            <div className="flex gap-2">
+                                {([['all', 'Everything', Layers], ['video', 'With video', PlayCircle], ['links', 'With press & links', Link2]] as const).map(([v, label, Icon]) => (
+                                    <button
+                                        key={v}
+                                        onClick={() => setMedia(v)}
+                                        aria-pressed={media === v}
+                                        aria-label={label}
+                                        className={cn(
+                                            'inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold border transition-colors whitespace-nowrap',
+                                            media === v ? 'bg-charcoal-900 border-charcoal-900 text-white' : 'bg-white border-sand-200 text-charcoal-700 hover:border-charcoal-300',
+                                        )}
+                                    >
+                                        <Icon size={15} /> <span className="hidden sm:inline">{label}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible -mx-1 px-1">
+                            <Chip active={!category} onClick={() => setCategory(null)}>All areas</Chip>
+                            {projectCategories.map((c) => (
+                                <Chip key={c.id} active={category === c.id} activeClass={toneMap[c.tone].chip} onClick={() => setCategory(category === c.id ? null : c.id)}>
+                                    {c.name} <span className="opacity-60">{c.projects.length}</span>
+                                </Chip>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible -mx-1 px-1">
+                            <MapPin size={14} className="shrink-0 text-charcoal-400" />
+                            {projectCountries.map((c) => (
+                                <Chip key={c} small active={country === c} onClick={() => setCountry(country === c ? null : c)}>{c}</Chip>
+                            ))}
+                            {hasFilters && (
+                                <button onClick={reset} className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-coral-600 hover:bg-coral-50">
+                                    <X size={12} /> Clear
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                    <p className="sr-only" aria-live="polite">{matches.size} projects shown</p>
                 </div>
 
-                <div className="space-y-24">
-                    {categories.map((cat, catIdx) => {
-                        const tone = colorMap[cat.color] ?? colorMap.blue;
-                        return (
-                            <motion.section
-                                key={catIdx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-80px" }}
-                                transition={{ duration: 0.7 }}
-                            >
-                                <motion.div
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5 }}
-                                    className="flex items-end mb-10"
-                                >
+                {visibleCategories.length === 0 ? (
+                    <div className="text-center py-20 rounded-3xl border border-dashed border-sand-300 bg-white/50">
+                        <p className="text-charcoal-500 mb-3">No projects match those filters.</p>
+                        <button onClick={reset} className="text-teal-700 font-semibold text-sm">Reset filters</button>
+                    </div>
+                ) : (
+                    <div className="space-y-20">
+                        {visibleCategories.map((cat) => (
+                            <section key={cat.id}>
+                                <div className="flex items-end mb-10">
                                     <div>
-                                        <h2 className="text-3xl font-bold text-midnight-900 font-display">{cat.name}</h2>
-                                        <p className={`text-midnight-500 text-sm mt-2 font-medium inline-block px-3 py-1 rounded-full backdrop-blur-sm border ${tone.pill}`}>
-                                            {cat.description}
-                                        </p>
+                                        <h2 className="text-2xl md:text-3xl font-bold text-charcoal-900 font-display">{cat.name}</h2>
+                                        <p className={cn('text-sm mt-2 font-medium inline-block px-4 py-1.5 rounded-full backdrop-blur-sm border', toneMap[cat.tone].pill)}>{cat.description}</p>
                                     </div>
-                                    <span className="h-px flex-grow bg-gradient-to-r from-midnight-100 to-transparent ml-6 mb-2"></span>
-                                </motion.div>
-
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {cat.projects.map((project, idx) => (
-                                        <motion.div key={idx} whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
-                                            <MagicalCard className="p-8 h-full flex flex-col group">
-                                                <div className="flex justify-between items-start mb-6">
-                                                    <div className={`p-3 rounded-2xl ring-1 transition-colors duration-300 ${tone.icon}`}>
-                                                        <project.icon size={28} />
-                                                    </div>
-                                                    <span className="text-[10px] font-bold tracking-widest uppercase text-midnight-400 bg-midnight-50/50 px-2 py-1 rounded backdrop-blur-sm">{project.period}</span>
-                                                </div>
-
-                                                <h3 className="text-xl font-bold text-midnight-900 mb-2 font-display">{project.title}</h3>
-                                                <div className="text-xs font-bold text-royal-600 uppercase tracking-wider mb-4 border-b border-dashed border-midnight-100 pb-4 w-full">{project.role}</div>
-
-                                                <p className="text-midnight-600 text-sm leading-relaxed mb-6 font-light">
-                                                    {project.desc}
-                                                </p>
-
-                                                {project.impact && (
-                                                    <div className={`mb-6 p-4 rounded-xl border ${tone.impact}`}>
-                                                        <span className="text-[10px] font-bold uppercase tracking-wider block mb-1">Impact</span>
-                                                        <p className="text-midnight-700 text-xs italic leading-relaxed">
-                                                            "{project.impact}"
-                                                        </p>
-                                                    </div>
-                                                )}
-
-                                                <div className="flex flex-wrap gap-2 mt-auto">
-                                                    {project.tags.map((tag, tIdx) => (
-                                                        <span key={tIdx} className="text-[10px] uppercase tracking-wide bg-white text-midnight-500 px-3 py-1 rounded-full font-medium border border-midnight-50 shadow-sm">
-                                                            {tag}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </MagicalCard>
-                                        </motion.div>
-                                    ))}
+                                    <span className="h-px flex-grow bg-gradient-to-r from-charcoal-200 to-transparent ml-6 mb-4 hidden md:block" />
                                 </div>
-                            </motion.section>
-                        );
-                    })}
-                </div>
-
+                                <motion.div layout className="grid md:grid-cols-2 gap-6">
+                                    <AnimatePresence mode="popLayout">
+                                        {cat.projects.map((project) => (
+                                            <ProjectCard key={project.id} project={project} tone={cat.tone} />
+                                        ))}
+                                    </AnimatePresence>
+                                </motion.div>
+                            </section>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
 }
+
+function Chip({ active, onClick, children, activeClass, small }: {
+    active: boolean; onClick: () => void; children: React.ReactNode; activeClass?: string; small?: boolean;
+}) {
+    return (
+        <button
+            onClick={onClick}
+            aria-pressed={active}
+            className={cn(
+                'shrink-0 inline-flex items-center gap-1.5 rounded-full font-semibold border transition-colors whitespace-nowrap',
+                small ? 'px-2.5 py-1 text-xs' : 'px-3.5 py-1.5 text-sm',
+                active ? cn('text-white', activeClass ?? 'bg-charcoal-900 border-charcoal-900') : 'bg-white border-sand-200 text-charcoal-600 hover:border-charcoal-300',
+            )}
+        >
+            {children}
+        </button>
+    );
+}
+
+function ProjectMedia({ project }: { project: Project }) {
+    const { open } = useLightbox();
+    const [showVideo, setShowVideo] = useState(!project.photo);
+    const { photo, videoId } = project;
+
+    if (!photo && !videoId) return project.stages ? <StageFlow stages={project.stages} /> : null;
+
+    return (
+        <div className="relative">
+            {videoId && showVideo ? (
+                <LiteYouTube videoId={videoId} title={project.title} poster={posterSrc(videoId)} className="rounded-none shadow-none" />
+            ) : photo ? (
+                <button
+                    type="button"
+                    onClick={() => open([photoToItem(photo)])}
+                    className="relative block w-full aspect-video overflow-hidden bg-sand-100 cursor-zoom-in group/photo"
+                    aria-label={`Enlarge photo: ${photo.alt}`}
+                >
+                    <img src={imageSrc(photo.id, true)} alt={photo.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-105" />
+                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal-950/75 to-transparent px-4 pt-10 pb-2 text-left">
+                        <span className="block text-white text-xs font-medium line-clamp-1">{photo.caption}</span>
+                        <span className="block text-white/60 text-[10px]">{creditText(photo)}</span>
+                    </span>
+                </button>
+            ) : null}
+            {photo && videoId && (
+                <div className="absolute top-3 left-3 flex rounded-full bg-charcoal-950/70 backdrop-blur p-1 text-white">
+                    <button onClick={() => setShowVideo(false)} aria-pressed={!showVideo} className={cn('inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold', !showVideo && 'bg-white text-charcoal-900')}>
+                        <ImageIcon size={12} /> Photo
+                    </button>
+                    <button onClick={() => setShowVideo(true)} aria-pressed={showVideo} className={cn('inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold', showVideo && 'bg-white text-charcoal-900')}>
+                        <PlayCircle size={12} /> Video
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+}
+
+/** Auto-advancing, clickable walkthrough of a platform's workflow stages. */
+function StageFlow({ stages }: { stages: NonNullable<Project['stages']> }) {
+    const [active, setActive] = useState(0);
+    const [auto, setAuto] = useState(true);
+
+    useEffect(() => {
+        if (!auto) return;
+        const t = setInterval(() => setActive((a) => (a + 1) % stages.length), 2600);
+        return () => clearInterval(t);
+    }, [auto, stages.length]);
+
+    return (
+        <div className="relative aspect-video bg-gradient-to-br from-charcoal-900 via-teal-900 to-teal-700 text-white p-5 sm:p-6 flex flex-col overflow-hidden">
+            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '20px 20px' }} />
+            <p className="relative text-[10px] font-bold uppercase tracking-widest text-teal-200 mb-auto">One programme, end to end</p>
+
+            <div className="relative flex items-start justify-between" role="tablist" aria-label="Programme stages">
+                <div className="absolute left-4 right-4 top-4 h-0.5 bg-white/20" />
+                <motion.div
+                    className="absolute left-4 top-4 h-0.5 bg-teal-300 origin-left"
+                    style={{ right: '1rem' }}
+                    animate={{ scaleX: active / (stages.length - 1) }}
+                    transition={{ duration: 0.4 }}
+                />
+                {stages.map((st, i) => (
+                    <button
+                        key={st.name}
+                        role="tab"
+                        aria-selected={i === active}
+                        onClick={() => { setActive(i); setAuto(false); }}
+                        className="relative flex flex-col items-center gap-2 w-14 sm:w-16 group/stage"
+                    >
+                        <span
+                            className={cn(
+                                'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all',
+                                i < active && 'bg-teal-300 border-teal-300 text-charcoal-900',
+                                i === active && 'bg-white border-white text-charcoal-900 scale-110 shadow-lg shadow-teal-300/40',
+                                i > active && 'bg-charcoal-900/60 border-white/30 text-white/70 group-hover/stage:border-white',
+                            )}
+                        >
+                            {i + 1}
+                        </span>
+                        <span className={cn('text-[10px] sm:text-[11px] font-semibold leading-tight text-center', i === active ? 'text-white' : 'text-white/60')}>
+                            {st.name}
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            <AnimatePresence mode="wait">
+                <motion.p
+                    key={active}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative mt-auto pt-4 text-sm text-white/85 min-h-[2.5rem]"
+                >
+                    <span className="font-bold text-teal-200">{stages[active].name}:</span> {stages[active].detail}
+                </motion.p>
+            </AnimatePresence>
+        </div>
+    );
+}
+
+/** "What happened next" panel linking a project to its successor. */
+function Evolution({ project }: { project: Project }) {
+    const ev = project.evolution!;
+
+    return (
+        <div className="mb-5 rounded-2xl border border-teal-100 bg-gradient-to-br from-teal-50 to-white p-4 sm:p-5">
+            <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-teal-700 mb-3">
+                <GitMerge size={13} /> What happened next
+            </p>
+            <div className="flex items-center gap-2 mb-3">
+                <span className="px-3 py-1.5 rounded-xl bg-white border border-sand-200 text-sm font-bold text-charcoal-800">
+                    {ev.from}
+                    <span className="block text-[10px] font-medium text-charcoal-400">{project.period}</span>
+                </span>
+                <motion.span
+                    className="flex-1 h-0.5 bg-gradient-to-r from-sand-300 to-teal-500 rounded-full origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                />
+                <ArrowRight size={16} className="text-teal-600 -ml-1" />
+                <span className="px-3 py-1.5 rounded-xl bg-teal-600 text-white text-sm font-bold">
+                    {ev.into}
+                    {ev.intoNote && <span className="block text-[10px] font-medium text-teal-100">{ev.intoNote}</span>}
+                </span>
+            </div>
+            <p className="text-sm text-charcoal-700 leading-relaxed">
+                <span className="font-semibold">{ev.title}.</span> {ev.text}
+            </p>
+            {ev.to && (
+                <Link to={ev.to} className="inline-flex items-center gap-1 mt-2 text-sm font-semibold text-teal-700 hover:text-teal-900">
+                    {ev.toLabel ?? 'Read more'} <ArrowRight size={14} />
+                </Link>
+            )}
+        </div>
+    );
+}
+
+const ProjectCard = forwardRef<HTMLElement, { project: Project; tone: CategoryTone }>(function ProjectCard({ project, tone }, ref) {
+    const t = toneMap[tone];
+    const Icon = project.icon;
+    const hasMedia = Boolean(project.photo || project.videoId || project.stages);
+
+    return (
+        <motion.article
+            ref={ref}
+            layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.3 }}
+            className="h-full flex flex-col rounded-3xl bg-white border-2 border-sand-200 hover:border-teal-200 hover:shadow-2xl hover:shadow-teal-900/10 transition-[border-color,box-shadow] duration-300 group overflow-hidden"
+        >
+            <ProjectMedia project={project} />
+
+            <div className={cn('bg-gradient-to-br px-6 flex relative', t.gradient, hasMedia ? 'py-4 items-center' : 'min-h-[7rem] py-6 items-end')}>
+                <span className="absolute top-3 right-4 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-white/20 text-white backdrop-blur-sm">
+                    {project.period}
+                </span>
+                <div className="flex items-center gap-4 pr-20">
+                    <div className="w-11 h-11 shrink-0 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center">
+                        <Icon size={22} className="text-white" />
+                    </div>
+                    <div>
+                        <h3 className="text-lg md:text-xl font-bold text-white font-display leading-tight">{project.title}</h3>
+                        <p className="text-white/80 text-sm">{project.role}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex-1 flex flex-col p-6">
+                <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-4">
+                    <Globe size={14} />
+                    {project.location}
+                </div>
+
+                <p className="text-charcoal-600 leading-relaxed mb-4 text-sm">{project.desc}</p>
+
+                <div className={cn('mb-5 p-4 rounded-xl border', t.impact)}>
+                    <span className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-charcoal-500">Impact</span>
+                    <p className="text-charcoal-700 text-sm leading-relaxed">{project.impact}</p>
+                </div>
+
+                <dl className="grid grid-cols-3 gap-3 mb-5 pb-5 border-b border-sand-100">
+                    {project.stats.map((stat) => {
+                        const src = stat.source ? linkById[stat.source] : undefined;
+                        return (
+                            <div key={stat.label} className="min-w-0">
+                                <dd className="text-lg md:text-xl font-bold text-charcoal-900 leading-tight flex items-start gap-1">
+                                    <span className="truncate">{stat.value}</span>
+                                    {src && (
+                                        <a
+                                            href={src.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="shrink-0 text-charcoal-300 hover:text-teal-600 mt-1"
+                                            title={`${src.publisher}: ${src.title}`}
+                                            aria-label={`Source for ${stat.label}: ${src.publisher}`}
+                                        >
+                                            <ExternalLink size={12} />
+                                        </a>
+                                    )}
+                                </dd>
+                                <dt className="text-[10px] text-charcoal-500 uppercase tracking-wider">{stat.label}</dt>
+                            </div>
+                        );
+                    })}
+                </dl>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.map((tag) => (
+                        <span key={tag} className="text-[10px] uppercase tracking-wide bg-sand-50 text-charcoal-600 px-3 py-1.5 rounded-full font-medium border border-sand-100">{tag}</span>
+                    ))}
+                </div>
+
+                {project.evolution && <Evolution project={project} />}
+
+                {(project.coverage?.length || project.caseStudy || project.website?.length) && (
+                    <div className="mt-auto pt-4 border-t border-sand-100 space-y-3">
+                        {project.coverage && <RelatedLinks ids={project.coverage} />}
+                        <div className="flex flex-wrap items-center gap-3">
+                            {project.caseStudy && (
+                                <Link to={`/research/${project.caseStudy}`} className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-charcoal-900 text-white text-xs font-semibold hover:bg-teal-700 transition-colors">
+                                    Read case study <ArrowRight size={14} />
+                                </Link>
+                            )}
+                            {project.website?.map((l) => (
+                                <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-charcoal-600 hover:text-teal-700">
+                                    {l.label} <ExternalLink size={12} />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+        </motion.article>
+    );
+});

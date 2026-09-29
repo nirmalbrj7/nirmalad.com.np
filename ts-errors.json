@@ -1,0 +1,17 @@
+[
+  "src/components/ui/AnimatedText.tsx(27,15): error TS6133: 'i' is declared but its value is never read.\r",
+  "src/components/ui/LocationMap.tsx(3,10): error TS6133: 'MapPin' is declared but its value is never read.\r",
+  "src/components/ui/Scene3D.tsx(43,13): error TS6133: 'state' is declared but its value is never read.\r",
+  "src/pages/Contact.tsx(4,1): error TS6133: 'MagneticButton' is declared but its value is never read.\r",
+  "src/pages/CV.tsx(1,123): error TS6133: 'ExternalLink' is declared but its value is never read.\r",
+  "src/pages/Recognition.tsx(2,1): error TS6133: 'motion' is declared but its value is never read.\r",
+  "src/pages/Research.tsx(1,22): error TS6133: 'Calendar' is declared but its value is never read.\r",
+  "src/pages/Research.tsx(1,32): error TS6133: 'ArrowUpRight' is declared but its value is never read.\r",
+  "src/pages/Research.tsx(1,74): error TS6133: 'Users' is declared but its value is never read.\r",
+  "src/pages/Research.tsx(1,89): error TS6133: 'Lightbulb' is declared but its value is never read.\r",
+  "src/pages/ResearchDetail.tsx(6,17): error TS6133: 'Play' is declared but its value is never read.\r",
+  "src/pages/ResearchDetail.tsx(6,23): error TS6133: 'Pause' is declared but its value is never read.\r",
+  "src/pages/ResearchDetail.tsx(8,54): error TS6133: 'AnimatePresence' is declared but its value is never read.\r",
+  "src/pages/ResearchDetail.tsx(359,12): error TS6133: 'activeTab' is declared but its value is never read.\r",
+  "src/pages/ResearchDetail.tsx(359,23): error TS6133: 'setActiveTab' is declared but its value is never read.\r"
+]

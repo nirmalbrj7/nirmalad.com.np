@@ -3,61 +3,85 @@
     
     <url>
         <loc>https://nirmalad.com.np/</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.226Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://nirmalad.com.np/research</loc>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nirmalad.com.np/research/ar-narratives</loc>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nirmalad.com.np/research/pd3r</loc>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nirmalad.com.np/research/isac-simo</loc>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nirmalad.com.np/research/bctap</loc>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://nirmalad.com.np/academic</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/publications</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/projects</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/open-source</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://nirmalad.com.np/volunteer</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/blog</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/recognition</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/contact</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://nirmalad.com.np/cv</loc>
-        <lastmod>2026-02-07T20:16:59.769Z</lastmod>
+        <lastmod>2026-09-29T00:46:20.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>

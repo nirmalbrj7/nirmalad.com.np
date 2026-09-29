@@ -7,11 +7,15 @@ const OUTPUT_FILE = resolve('public', 'sitemap.xml');
 
 const routes = [
     '/',
+    '/research',
+    '/research/ar-narratives',
+    '/research/pd3r',
+    '/research/isac-simo',
+    '/research/bctap',
     '/academic',
     '/publications',
     '/projects',
     '/open-source',
-    '/volunteer',
     '/blog',
     '/recognition',
     '/contact',

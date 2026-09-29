@@ -41,7 +41,7 @@ const ResearchGraph = () => {
             { id: "Digital Twins", group: 1, val: 8, type: 'theme', description: "Spatial data modeling and real-time representation." },
             { id: "Accessible Tech", group: 3, val: 8, type: 'theme', description: "Inclusive systems for diverse user abilities and contexts." },
 
-            { id: "PD3R (Call for Code Finalist)", group: 2, val: 14, type: 'project', description: "AI-based mobile tool to assess post-disaster housing retrofit potential.", year: "2018" },
+            { id: "PD3R (Call for Code 2nd Place)", group: 2, val: 14, type: 'project', description: "AI-based mobile tool to assess post-disaster housing retrofit potential.", year: "2018" },
             { id: "Resilient Housing in a Box", group: 1, val: 14, type: 'project', description: "End-to-end platform for housing recovery programs.", year: "2022–2023" },
             { id: "Technical Assistance Platform", group: 1, val: 12, type: 'project', description: "Data collection and workflow system for housing programs.", year: "2021–2023" },
             { id: "Global Risk Awareness App", group: 2, val: 10, type: 'project', description: "Hazard mapping and vulnerability awareness for communities.", year: "2018–2021" },
@@ -68,7 +68,7 @@ const ResearchGraph = () => {
             { source: "Immersive Computing (XR)", target: "ICIDS 2025: Immersive AR Narrative Methodology" },
             { source: "Immersive Computing (XR)", target: "Dalhousie University" },
             { source: "AI for Social Good", target: "Machine Learning" },
-            { source: "AI for Social Good", target: "PD3R (Call for Code Finalist)" },
+            { source: "AI for Social Good", target: "PD3R (Call for Code 2nd Place)" },
             { source: "AI for Social Good", target: "ISAC-SIMO Open Source QA" },
             { source: "Disaster Resilience", target: "GIS" },
             { source: "Disaster Resilience", target: "Global Risk Awareness App" },
@@ -141,30 +141,37 @@ const ResearchGraph = () => {
             .attr("stroke-width", 1.5);
 
         const node = g.append("g")
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 2)
+            .attr("stroke", "rgba(255, 255, 255, 0.8)")
+            .attr("stroke-width", 1.5)
             .selectAll("circle")
             .data(nodes)
             .join("circle")
-            .attr("r", (d) => Math.sqrt(d.val) * 4)
             .attr("fill", (d) => {
-                if (d.group === 1) return "#6366f1"; // Royal
-                if (d.group === 2) return "#0ea5e9"; // Sky
-                return "#ec4899"; // Pink
+                if (d.group === 1) return "#0d7377"; // Deep Teal
+                if (d.group === 2) return "#e07a5f"; // Coral Signal
+                return "#e9c46a"; // Vibrant Sand/Gold
             })
             .style("filter", "url(#glow)") // Apply Glow
             .style("cursor", "pointer")
-            .on("mouseover", function (_, d) {
-                d3.select(this).attr("stroke", "#1e293b").attr("stroke-width", 3);
+            .on("mouseover", function (_event, d) {
+                // Remove stroke on hover for a cleaner look and scale slightly
+                d3.select(this)
+                    .transition().duration(200)
+                    .attr("stroke-width", 3)
+                    .attr("stroke", "#111827");
+
                 tooltip
                     .style("opacity", 1)
-                    .html(`<div style="font-weight:700; margin-bottom:4px;">${d.id}</div><div style="font-size:12px; color:#475569;">${d.description}</div>`);
+                    .html(`<div style="font-weight:700; margin-bottom:4px; font-size:14px;">${d.id}</div><div style="font-size:12px; color:#e2e8f0; line-height:1.4;">${d.description}</div>`);
             })
             .on("mousemove", function (event) {
                 tooltip.style("left", `${event.offsetX + 16}px`).style("top", `${event.offsetY + 16}px`);
             })
             .on("mouseout", function () {
-                d3.select(this).attr("stroke", "#fff").attr("stroke-width", 2);
+                d3.select(this)
+                    .transition().duration(200)
+                    .attr("stroke", "rgba(255, 255, 255, 0.8)")
+                    .attr("stroke-width", 1.5);
                 tooltip.style("opacity", 0);
             })
             .on("click", (_, d) => {
@@ -175,6 +182,14 @@ const ResearchGraph = () => {
                 .on("drag", dragged)
                 .on("end", dragended));
 
+        // Elastic entry animation for nodes
+        node.attr("r", 0)
+            .transition()
+            .duration(1000)
+            .ease(d3.easeElasticOut)
+            .delay((_, i) => i * 30 + 100)
+            .attr("r", (d) => Math.sqrt(d.val) * 4.5);
+
         const tooltip = d3
             .select(wrapperRef.current)
             .append("div")
@@ -182,13 +197,16 @@ const ResearchGraph = () => {
             .style("position", "absolute")
             .style("pointer-events", "none")
             .style("opacity", 0)
+            .style("background", "rgba(15, 23, 42, 0.85)")
+            .style("border", "1px solid rgba(255, 255, 255, 0.15)")
+            .style("box-shadow", "0 20px 25px -5px rgba(0, 0, 0, 0.3)")
             .style("color", "white")
-            .style("padding", "12px 16px")
+            .style("padding", "14px 18px")
             .style("border-radius", "16px")
             .style("font-size", "13px")
-            .style("max-width", "260px")
+            .style("max-width", "280px")
             .style("z-index", "50")
-            .style("backdrop-filter", "blur(12px)");
+            .style("backdrop-filter", "blur(16px) saturate(180%)");
 
         const labels = g.append("g")
             .attr("class", "labels")
@@ -248,10 +266,10 @@ const ResearchGraph = () => {
         <div className="space-y-6">
             <div ref={wrapperRef} className="w-full relative overflow-hidden bg-white/60 backdrop-blur-sm rounded-[2.5rem] border border-white/60 shadow-xl">
                 <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                    <span className="text-[11px] font-bold text-royal-700 uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full">Research Network</span>
+                    <span className="text-[11px] font-bold text-teal-700 uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full">Research Network</span>
                     <button
                         onClick={() => setSelectedNode(null)}
-                        className="text-[11px] font-semibold text-midnight-600 bg-white/70 px-3 py-1 rounded-full border border-white/70 hover:border-royal-200 transition-colors"
+                        className="text-[11px] font-semibold text-midnight-600 bg-white/70 px-3 py-1 rounded-full border border-white/70 hover:border-teal-200 transition-colors"
                     >
                         Clear Selection
                     </button>
@@ -268,7 +286,7 @@ const ResearchGraph = () => {
                                 type="checkbox"
                                 checked={activeTypes[item.key]}
                                 onChange={() => setActiveTypes((prev) => ({ ...prev, [item.key]: !prev[item.key] }))}
-                                className="h-3.5 w-3.5 rounded border-midnight-300 text-royal-600 focus:ring-royal-500"
+                                className="h-3.5 w-3.5 rounded border-midnight-300 text-teal-600 focus:ring-teal-500"
                             />
                             {item.label}
                         </label>
@@ -296,7 +314,7 @@ const ResearchGraph = () => {
                                     type="checkbox"
                                     checked={activeTypes[item.key]}
                                     onChange={() => setActiveTypes((prev) => ({ ...prev, [item.key]: !prev[item.key] }))}
-                                    className="h-4 w-4 rounded border-midnight-300 text-royal-600 focus:ring-royal-500"
+                                    className="h-4 w-4 rounded border-midnight-300 text-teal-600 focus:ring-teal-500"
                                 />
                                 {item.label}
                             </label>
